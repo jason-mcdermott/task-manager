@@ -49,14 +49,21 @@ router.put('/tasks/:id', async (req, res) => {
     }
 
     try {
-        let task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })      
+        let task = await Task.findById(req.params.id)
+        
+        updates.forEach((update) => {
+            task[update] = req.body[update]
+        })
+
+        await task.save()
+        
         if(!task) {
             return res.status(404).send()
         }
 
-        res.status(204).send()
+        res.send(task)
     } catch(error) {
-        res.status(400).send({
+        res.status(500).send({
             error: 'there was an unexpected error handling your request'
         })
     }
