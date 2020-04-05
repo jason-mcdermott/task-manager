@@ -9,7 +9,18 @@ router.post('/users', async (req, res) => {
         await user.save()
         res.status(201).send(user)        
     } catch(error) {
-        res.status(400).send(error)
+        res.status(400).send({
+            error: 'Unable to create user'
+        })
+    }
+})
+
+router.post('/users/login', async (req, res) => {
+    try {
+        let user = await User.findByCredentials(req.body.email, req.body.password)
+        res.send(user)
+    } catch (error) {
+        res.status(403).send()
     }
 })
 
