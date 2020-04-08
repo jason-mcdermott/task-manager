@@ -1,6 +1,7 @@
 let express = require('express')
 let router = new express.Router()
 let User = require('../models/user')
+let auth = require('../middleware/authentication')
 
 router.post('/users', async (req, res) => {
     let user = new User(req.body)
@@ -24,6 +25,10 @@ router.post('/users/login', async (req, res) => {
     } catch (error) {
         res.status(403).send()
     }
+})
+
+router.get('/users/me', auth, async (req, res) => {
+    res.send(req.user)
 })
 
 router.get('/users', async (req, res) => {
