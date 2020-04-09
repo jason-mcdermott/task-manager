@@ -53,17 +53,6 @@ router.get('/users/me', auth, async (req, res) => {
     res.send(req.user)
 })
 
-router.get('/users', async (req, res) => {
-    try {
-        let users = await User.find()
-        res.status(200).send(users)        
-    } catch(error) {
-        res.status(500).send({
-            error: 'there was an unexpected error handling your request'
-        })
-    }
-})
-
 router.put('/users/me', auth, async (req, res) => {
     let updates = Object.keys(req.body)
     let allowedUpdates = ['name', 'email', 'password', 'age']
